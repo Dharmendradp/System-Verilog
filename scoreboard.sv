@@ -1,0 +1,22 @@
+class scoreboard;
+base_pkt pkt1,pkt2;
+mailbox drv2sb,mon2sb;
+function new(base_pkt pkt1,pkt2,mailbox drv2sb,mon2sb);
+this.pkt1=pkt1;
+this.pkt2=pkt2;
+this.drv2sb=drv2sb;
+this.mon2sb=mon2sb;
+endfunction
+task sb_run();
+begin
+mon2sb.get(pkt2);
+drv2sb.get(pkt1);
+#10
+if(pkt2.Q==pkt1.Din)
+$display("matched pkt2.Q=%b pkt1.Din=%b",pkt2.Q,pkt1.Din);
+else
+$display("notmatched pkt2.Q=%b pkt1.Din=%b",pkt2.Q,pkt1.Din);
+end
+endtask
+endclass :scoreboard
+
